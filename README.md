@@ -1,6 +1,6 @@
 # Code practical - HWSA 2021 slides
 
-This slide deck was generated using the (marp-cli-example template)[https://yhatt.github.io/marp-cli-example].
+This slide deck was generated using the [marp-cli-example template](https://yhatt.github.io/marp-cli-example).
 
 ## LICENSE
 
