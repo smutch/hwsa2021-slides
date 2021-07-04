@@ -33,6 +33,23 @@ Simon Mutch
 
 ---
 
+# General optimisation rules (for Python)
+
+For loops should be avoided if possible.
+
+```python
+arr = np.arange(10)
+
+# BAD
+for ii, val in enumerate(arr):
+    arr[ii] = val**2
+
+# GOOD
+arr = arr**2
+```
+
+---
+
 # Common misconceptions
 
 Numpy `vectorize` does not "vectorize" your code!
