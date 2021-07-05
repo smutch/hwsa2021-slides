@@ -35,6 +35,155 @@ Simon Mutch
 
 ---
 
+# Profiling
+
+---
+
+# cProfile
+
+<style scoped>pre,pre[class*="language-"] {font-size: 45%}</style>
+ 
+```python
+import cProfile
+import pstats
+
+profile = cProfile.Profile()
+
+profile.enable()
+
+dn_dlogm_list = []
+for z in z_list:
+    dn_dlogm_list.append(press_schecter(M_list, z, A_std_func()))
+
+profile.disable()
+
+ps = pstats.Stats(profile).strip_dirs().sort_stats(SortKey.TIME)
+ps.print_stats()
+```
+#
+
+---
+
+# cProfile
+
+<style scoped>pre,pre[class*="language-"] {font-size: 45%}</style>
+ 
+```python {6,12}
+import cProfile
+import pstats
+
+profile = cProfile.Profile()
+
+profile.enable()
+
+dn_dlogm_list = []
+for z in z_list:
+    dn_dlogm_list.append(press_schecter(M_list, z, A_std_func()))
+
+profile.disable()
+
+ps = pstats.Stats(profile).strip_dirs().sort_stats(SortKey.TIME)
+ps.print_stats()
+```
+#
+
+---
+
+# cProfile
+
+<style scoped>pre,pre[class*="language-"] {font-size: 45%}</style>
+ 
+```python {6,12}
+import cProfile
+import pstats
+
+profile = cProfile.Profile()
+
+profile.enable()
+
+dn_dlogm_list = []
+for z in z_list:
+    dn_dlogm_list.append(press_schecter(M_list, z, A_std_func()))
+
+profile.disable()
+
+ps = pstats.Stats(profile).strip_dirs().sort_stats(SortKey.TIME)
+ps.print_stats()
+```
+
+```
+         3326986 function calls in 8.092 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+  1094475    4.079    0.000    4.079    0.000 press_schecter.py:22(tophat_ft)
+  1094475    2.482    0.000    2.482    0.000 press_schecter.py:27(power)
+  1094100    0.894    0.000    7.454    0.000 press_schecter.py:38(<lambda>)
+     4005    0.536    0.000    7.992    0.002 {built-in method scipy.integrate._quadpack._qagie}
+     1000    0.018    0.000    6.116    0.006 common.py:75(derivative)
+     1000    0.012    0.000    0.012    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+        5    0.012    0.002    8.089    1.618 press_schecter.py:69(press_schecter)
+```
+
+---
+
+# line_profiler
+
+```python
+@profile
+def press_schechter(...):
+    ...
+```
+
+```sh
+> kernprof -l press_schecter.py
+> python3 -m line_profiler press_schechter.py.lprof
+```
+#
+
+---
+
+# line_profiler
+
+<style scoped>pre,pre[class*="language-"] {font-size: 45%}</style>
+```python
+@profile
+def press_schechter(...):
+    ...
+```
+
+```sh
+> kernprof -l press_schecter.py
+> python3 -m line_profiler press_schechter.py.lprof
+```
+
+```
+Function: press_schecter at line 66
+
+Line #      Hits         Time  Per Hit   % Time  Line Contents
+==============================================================
+    66                                           @profile
+    67                                           def press_schecter(M_list, z, A_std):
+    68         5        115.0     23.0      0.0      R_list = (2 * (M_list) * G / (h0 ** 2 * wm)) ** (1 / 3)
+    69         5         18.0      3.6      0.0      rho = rho_m(z=0)
+    70
+    71         5        764.0    152.8      0.0      d_c = d_crit(z)
+    72
+    73         5          4.0      0.8      0.0      dn_dlogm = []
+    74      1005       1436.0      1.4      0.0      for r in R_list:
+    75      1000    3266597.0   3266.6     24.3          std = stdev(r, A=A_std)
+    76      1000       2010.0      2.0      0.0          deriv = (
+    77      1000   10167353.0  10167.4     75.6              2 * G / (3 * h0 ** 2 * wm * r ** 2) * derivative(lambda rr: np.log(stdev(rr, A=A_std)), x0=r, dx=r * 0.5)
+    78                                                   )
+    79      1000       1078.0      1.1      0.0          nu = d_c / std
+    80      1000       9737.0      9.7      0.1          dn_dlogm.append(np.sqrt(2 / np.pi) * rho * -deriv * nu * np.exp(-(nu ** 2) / 2))
+    81         5          3.0      0.6      0.0      return dn_dlogm
+```
+#
+
+---
+
 # Things to know about Python and optimisation
 
 ## (Almost) Everything is an object
@@ -70,6 +219,7 @@ for ii, val in enumerate(arr):
 # GOOD
 arr = np.sqrt(arr)
 ```
+#
 
 ---
 

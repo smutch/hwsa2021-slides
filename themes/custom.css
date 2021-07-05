@@ -1,4 +1,5 @@
-/* @theme custom */
+/* @theme custom
+ */
 
 @import 'default';
 
@@ -27,4 +28,13 @@ section>*:nth-child(1) {
 section>*:nth-last-child(2) {
   /* position: absolute; */
   flex-grow: 1;
+}
+
+/* pre, pre[class*="language-"] { */
+/* } */
+
+.highlighted-line {
+  background-color: rgb(19, 119, 229);
+  color: white;
+  display: block;
 }
