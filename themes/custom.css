@@ -14,3 +14,17 @@ p.quote {
   text-align: right;
   font-family: serif;
 }
+
+section>*:first-child {
+  /* position: absolute; */
+  flex-grow: 1;
+}
+
+section>*:nth-child(1) {
+  flex-shrink: 1;
+}
+
+section>*:nth-last-child(2) {
+  /* position: absolute; */
+  flex-grow: 1;
+}
