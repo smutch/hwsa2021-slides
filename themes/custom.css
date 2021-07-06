@@ -16,6 +16,7 @@ p.quote {
   text-align: right;
   font-family: serif;
   background-color: #c0c6cc;
+  padding: 10px;
 }
 
 p.standout {
@@ -48,7 +49,7 @@ pre, pre[class*="language-"] {
 }
 
 .highlighted-line {
-  background-color: rgb(19, 119, 229);
+  background-color: #546E7A;
   color: white;
   display: block;
 }

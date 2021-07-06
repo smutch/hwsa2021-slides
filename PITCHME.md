@@ -314,7 +314,7 @@ For regression testing, the [regtest](https://pypi.org/project/pytest-regtest/) 
 
 ---
 
-# Regression tests with pytest-regtest
+# Regression tests with pytest
 
 Naming of directories, files and functions all matter with pytest. You can configure this, but standard practice is:
 - Place all of your tests in a directory called `tests`.
@@ -334,26 +334,22 @@ def test_regressions(...): ...
 
 ---
 
-# Regression tests with pytest-regtest
+# Regression tests with pytest
 
 ```py
-import numpy as np
 from pytest_regtest import regtest
 
-from code_prac import press_schechter
+from mycode import myfunc
 
-def test_press_schechter(regtest):
+def test_mycode(regtest):
 
-    redshifts = [0.0, 5.0, 10.0, 20.0, 30.0]
-    masses = np.logspace(2, 15, 200)
-
-    result = press_schechter(redshifts, masses)
+    result = myfunc(...)
 
     with regtest:
         print(result)
 ```
 
-Need to initialise and store the expected output the first time around.
+We need to initialise and store the expected output the first time around.
 
 ```sh
 > pytest --regtest-reset
@@ -363,7 +359,7 @@ The results will go in `tests/_regtest_outputs/` which should be committed to ve
 
 ---
 
-# Regression tests with pytest-regtest
+# Regression tests with pytest
 
 Now, after trying to optimise the code, we can check we still get the right result using:
 
@@ -372,7 +368,7 @@ Now, after trying to optimise the code, we can check we still get the right resu
 
 ============================================================================== test session starts ==============================================================================
 platform darwin -- Python 3.9.5, pytest-6.2.4, py-1.10.0, pluggy-0.13.1
-rootdir: /blaa/blaa/code_prac_hwsa2021
+rootdir: /blaa/blaa/mycode
 plugins: regtest-1.4.6
 collected 1 item
 
@@ -392,7 +388,7 @@ If the output of the `press_schechter` function changes:
 
 ============================================================================== test session starts ==============================================================================
 platform darwin -- Python 3.9.5, pytest-6.2.4, py-1.10.0, pluggy-0.13.1
-rootdir: /Users/smutch/work/training/harleywood-2021/code_prac_hwsa2021
+rootdir: /blaa/blaa/mycode
 plugins: regtest-1.4.6
 collected 1 item
 
@@ -401,7 +397,7 @@ tests/test_regressions.py F                                                     
 =================================================================================== FAILURES ====================================================================================
 _____________________________________________________________________________ test_press_schechter ______________________________________________________________________________
 
-regression test output differences for tests/test_regressions.py::test_press_schechter:
+regression test output differences for tests/test_regressions.py::test_mycode:
 
 >   --- current
 >   +++ tobe
@@ -411,7 +407,7 @@ regression test output differences for tests/test_regressions.py::test_press_sch
 ...
 
 ============================================================================ short test summary info ============================================================================
-FAILED tests/test_regressions.py::test_press_schechter
+FAILED tests/test_regressions.py::test_mycode
 ============================================================================== 1 failed in 10.03s ===============================================================================
 
 ```
@@ -468,12 +464,17 @@ arr = np.sqrt(arr)
 
 ---
 
+<style scoped>
+.nudge-down {margin-top: 40px;}
+h2 {margin-bottom: 0px;}
+</style>
+
 # An aside...
-## A common misconception
+## A common misconception:
 
-Numpy `vectorize` does not "vectorize" your code!
+Numpy `vectorize` does not "vectorize" your code.
 
-From the docs:
+From the docs: [[.nudge-down]]
 
 "The vectorize function is provided primarily for convenience, not for performance. The implementation is essentially a for loop."
 -- _Numpy docs_
@@ -489,17 +490,75 @@ From the docs:
 <style scoped>
 ul {font-size: 0.8rem;}
 h1 {line-height: 1.5rem;}
+li.no-bullet {list-style-type: none;} 
 </style>
 
-There are a number of techniques and tools at our disposal. Which ones will work best is heavily dependent on the problem:
+There are a number of techniques and tools at our disposal. Which ones will work best is heavily dependent on the problem. e.g.:
 - Use 3rd-party libraries which are already optimised!
     **(I won't cover this, but it should always be your first stop.)**
 - Algorithmic changes (e.g. identifying redundant calculations).
+* ⬇️ **This is what we'll look at today.** ⬇️  [[.no-bullet]]
 - Memoisation (caching of results for reuse later)
 - Dropping down to a lower level using [Numba](https://numba.pydata.org/), [Cython](https://numba.pydata.org/), etc.
 - Parallelisation
 
 ---
+
+# Memoisation
+
+#### The idea
+Sometimes we have a function that may be called many times with the same input. In these situations it may be faster to store the results and reuse them rather than recalculating them each time.
+
+#### Works well when
+- You have an expensive function being called a number of times with the same input.
+- You have any non-trivial function being called many, many times with the same _small_ input.
+
+---
+
+# Memoisation
+
+#### A (very contrived) example
+
+```py
+import numpy as np
+
+points = np.random.rand(10_000, 2)
+
+def myfunc(x, y):
+    return (np.log10(np.sqrt(x**2 + y**2) * 5) / 0.2)**6
+
+result = 0.0
+for _ in range(100):
+    result += np.array([myfunc(x, y) for x, y in points])
+```
+
+`5.02 s ± 242 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)`
+
+---
+
+# Memoisation
+
+#### A (very contrived) example
+
+```py {1,7}
+from functools import cache
+
+import numpy as np
+
+points = np.random.rand(10_000, 2)
+
+@cache
+def myfunc(x, y):
+    return (np.log10(np.sqrt(x**2 + y**2) * 5) / 0.2)**6
+
+result = 0.0
+for _ in range(100):
+    result += np.array([myfunc(x, y) for x, y in points])
+```
+
+`1.28 s ± 423 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)`
+
+A factor of ~4 speed-up by adding 2 lines... Not bad!
 
 <!--
    - ---
