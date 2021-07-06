@@ -468,18 +468,38 @@ arr = np.sqrt(arr)
 
 ---
 
-# 
-
-# Common misconceptions
+# An aside...
+## A common misconception
 
 Numpy `vectorize` does not "vectorize" your code!
 
 From the docs:
 
 "The vectorize function is provided primarily for convenience, not for performance. The implementation is essentially a for loop."
-_Numpy docs_
+-- _Numpy docs_
 [[.quote]]
 
+
+---
+
+# I've removed all the loops I can, but I still need more speed!!!
+
+![bg right:33%](./assets/braden-collum-9HI8UJMSdZA-unsplash.jpg)
+
+<style scoped>
+ul {font-size: 0.8rem;}
+h1 {line-height: 1.5rem;}
+</style>
+
+There are a number of techniques and tools at our disposal. Which ones will work best is heavily dependent on the problem:
+- Use 3rd-party libraries which are already optimised!
+    **(I won't cover this, but it should always be your first stop.)**
+- Algorithmic changes (e.g. identifying redundant calculations).
+- Memoisation (caching of results for reuse later)
+- Dropping down to a lower level using [Numba](https://numba.pydata.org/), [Cython](https://numba.pydata.org/), etc.
+- Parallelisation
+
+---
 
 <!--
    - ---

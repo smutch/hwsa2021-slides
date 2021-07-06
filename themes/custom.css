@@ -15,6 +15,7 @@ footer {
 p.quote {
   text-align: right;
   font-family: serif;
+  background-color: #c0c6cc;
 }
 
 p.standout {
