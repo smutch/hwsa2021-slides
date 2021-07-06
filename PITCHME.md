@@ -38,44 +38,16 @@ Simon Mutch
 
 ---
 
-# Things to know about Python and speed
+# The optimisation cycle
 
-## Python is an interpreted language and (almost) everything is an object
+![bg right](./assets/age-barros-rBPOfVqROzY-unsplash.jpg)
 
-This means there is a cost with looking up and accessing values.
-
-```python
-a = 8.0 
-print(a)
-```
-
-Translated to C this is actually something more like _(but in reality way more complicated!)_:
-
-```c
-void *a = (void*)malloc(sizeof(double));
-*(int*)a = 8.0;
-printf("{:g}\n", *((int*)a));
-```
-
----
-
-# General optimisation rules (for Python)
-
-For loops should be avoided if possible for large N. Take advantage of Numpy's ufuncs (which will vectorize this and do it more efficiently).
-
-```python
-arr = np.arange(10)
-
-# BAD
-for ii, val in enumerate(arr):
-    arr[ii] = np.sqrt(val)
-
-# GOOD
-arr = np.sqrt(arr)
-```
-#
-
----
+1) Profile
+2) Develop regression tests
+3) Optimise identified bottlenecks
+4) Test
+5) Profile
+6) Go back to 3 or call it a day
 
 ---
 
@@ -263,6 +235,99 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 * **% Time**: Percentage of time spent on this line relative to whole function.
 
 ---
+
+<!-- _class: all-centered -->
+
+![bg left:33%](./assets/chris-liverani-ViEBSoZH6M4-unsplash.jpg)
+
+<style scoped>
+ul {
+    margin-bottom: 20px;
+}
+li,ul p {
+    margin: 0;
+    line-height: 1.3rem;
+    font-size: 0.8rem;
+}
+li,ul {
+    padding-left: 0px;
+}
+ul ul {
+    padding-left: 20px;
+}
+</style>
+
+# Writing tests
+
+- Make tests part of your routine
+    - **Way** easier to write unit tests as you go along, rather than coming back after-the-fact.
+
+- Unit tests: Ideally test the smallest logical units of your code (e.g. individual functions).
+    - Should test edge cases and correctness
+- Regression tests: Tests larger units (often the whole program) to make sure you can recover the same answer.
+    - Sometimes you don't want these (e.g. when changing physical models), but they are **very important** for optimisation.
+
+---
+
+# Pytest
+
+---
+
+# Coverage
+
+---
+
+# <!-- _class: all-centered -->
+# <!-- fit --> Let's go fast!
+
+---
+
+# Things to know about Python and speed
+
+## Python is an interpreted language and (almost) everything is an object
+
+This means there is a cost with looking up and accessing values.
+
+```python
+a = 8.0 
+print(a)
+```
+
+Translated to C this is actually something more like _(but in reality way more complicated!)_:
+
+```c
+void *a = (void*)malloc(sizeof(double));
+*(int*)a = 8.0;
+printf("{:g}\n", *((int*)a));
+```
+
+---
+
+# **The most important** python optimisation rule
+
+#### For loops should be avoided if possible. Take advantage of Numpy's ufuncs (which will vectorize it and do it more efficiently).
+
+```python
+arr = np.arange(100_000)
+
+# BAD: 165 ms ± 4.78 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)
+for ii, val in enumerate(arr):
+    arr[ii] = np.sqrt(val)
+
+# GOOD: 147 µs ± 2.51 µs per loop (mean ± std. dev. of 7 runs, 10000 loops each)
+arr = np.sqrt(arr)
+```
+
+<div data-marpit-fragment>
+
+147 µs = 0.147 ms
+∴ x1,112 speed up !!! :open_mouth:
+
+</div>
+
+---
+
+# 
 
 # Common misconceptions
 
