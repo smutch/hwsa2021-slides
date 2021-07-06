@@ -308,12 +308,113 @@ Some useful topics to check out include:
 - Fixtures
 - Parameterizing tests
 - Setting up continuous integration (CI) for automated testing
+- Coverage measurements
 
-For regression testing, I recommend the [regtest](https://pypi.org/project/pytest-regtest/)<sup>1</sup> plugin...
+For regression testing, the [regtest](https://pypi.org/project/pytest-regtest/) plugin is popular<sup>1</sup>...
 
 ---
 
-# Coverage
+# Regression tests with pytest-regtest
+
+Naming of directories, files and functions all matter with pytest. You can configure this, but standard practice is:
+- Place all of your tests in a directory called `tests`.
+- You need to have a `__init__.py` file in `tests` (to make them part of a module) but it can be empty.
+- Each file should be called `test_*.py`.
+- Each test function should be called `test_*`.
+
+```
+tests
+├── __init__.py
+└── test_regressions.py
+```
+
+```py
+def test_regressions(...): ...
+```
+
+---
+
+# Regression tests with pytest-regtest
+
+```py
+import numpy as np
+from pytest_regtest import regtest
+
+from code_prac import press_schechter
+
+def test_press_schechter(regtest):
+
+    redshifts = [0.0, 5.0, 10.0, 20.0, 30.0]
+    masses = np.logspace(2, 15, 200)
+
+    result = press_schechter(redshifts, masses)
+
+    with regtest:
+        print(result)
+```
+
+Need to initialise and store the expected output the first time around.
+
+```sh
+> pytest --regtest-reset
+```
+
+The results will go in `tests/_regtest_outputs/` which should be committed to version control.
+
+---
+
+# Regression tests with pytest-regtest
+
+Now, after trying to optimise the code, we can check we still get the right result using:
+
+```
+> pytest
+
+============================================================================== test session starts ==============================================================================
+platform darwin -- Python 3.9.5, pytest-6.2.4, py-1.10.0, pluggy-0.13.1
+rootdir: /blaa/blaa/code_prac_hwsa2021
+plugins: regtest-1.4.6
+collected 1 item
+
+tests/test_regressions.py .                                                                                                                                               [100%]
+
+=============================================================================== 1 passed in 9.22s ===============================================================================
+```
+
+---
+
+# Regression tests with pytest-regtest
+
+If the output of the `press_schechter` function changes:
+
+```
+> pytest
+
+============================================================================== test session starts ==============================================================================
+platform darwin -- Python 3.9.5, pytest-6.2.4, py-1.10.0, pluggy-0.13.1
+rootdir: /Users/smutch/work/training/harleywood-2021/code_prac_hwsa2021
+plugins: regtest-1.4.6
+collected 1 item
+
+tests/test_regressions.py F                                                                                                                                               [100%]
+
+=================================================================================== FAILURES ====================================================================================
+_____________________________________________________________________________ test_press_schechter ______________________________________________________________________________
+
+regression test output differences for tests/test_regressions.py::test_press_schechter:
+
+>   --- current
+>   +++ tobe
+>   @@ -1,2 +1,2 @@
+>   -[[3943684.4663377525, 3433036.716787263, 2988666.7237358466, 2601939.030501016, 2265406.0334823187, 1972476.6100945876, 1717547.9139849006, 1495624.5560116607, 1302452.0154
+
+...
+
+============================================================================ short test summary info ============================================================================
+FAILED tests/test_regressions.py::test_press_schechter
+============================================================================== 1 failed in 10.03s ===============================================================================
+
+```
 
 ---
 
