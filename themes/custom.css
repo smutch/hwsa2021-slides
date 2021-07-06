@@ -17,6 +17,11 @@ p.quote {
   font-family: serif;
 }
 
+p.standout {
+  color: #F78C6C;
+  background-color: #2E3C43;
+}
+
 h1.large {
   font-size: 3rem;
 }

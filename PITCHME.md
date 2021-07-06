@@ -44,10 +44,12 @@ Simon Mutch
 
 1) Profile
 2) Develop regression tests
-3) Optimise identified bottlenecks
-4) Test
-5) Profile
-6) Go back to 3 or call it a day
+3) Baseline timing
+4) Optimise identified bottlenecks
+5) Time
+6) Test
+7) Profile then go back to 4
+   **or** call it a day and bask in glory
 
 ---
 
@@ -242,11 +244,11 @@ Line #      Hits         Time  Per Hit   % Time  Line Contents
 
 <style scoped>
 ul {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 li,ul p {
     margin: 0;
-    line-height: 1.3rem;
+    line-height: 1.2rem;
     font-size: 0.8rem;
 }
 li,ul {
@@ -255,21 +257,59 @@ li,ul {
 ul ul {
     padding-left: 20px;
 }
+ul ul li {
+    font-size: 0.7rem;
+    line-height: 1rem;
+}
 </style>
 
-# Writing tests
+# Testing
 
-- Make tests part of your routine
-    - **Way** easier to write unit tests as you go along, rather than coming back after-the-fact.
-
-- Unit tests: Ideally test the smallest logical units of your code (e.g. individual functions).
-    - Should test edge cases and correctness
-- Regression tests: Tests larger units (often the whole program) to make sure you can recover the same answer.
+- **Unit tests**: Ideally test the smallest logical units of your code (e.g. individual functions).
+    - Should (ideally) test correctness, edge cases and unexpected input.
+- **Integration tests**: Tests larger units or the whole code and how they interact.
+    - Should (ideally) test correctness, edge cases and unexpected input.
+- **Regression tests**: Tests larger units or the whole code to make sure you recover the same answer after changes.
     - Sometimes you don't want these (e.g. when changing physical models), but they are **very important** for optimisation.
+
+<div data-marpit-fragment>
+
+**Make testing part of your routine**.
+It's a lot easier to write tests as you go along, rather than coming back after-the-fact.
+[[.standout]]
+
+<style scoped>
+p.standout {
+    font-size: 0.8rem;
+    padding: 0 0.3rem;
+    text-align: right;
+}
+</style>
+
+</div>
 
 ---
 
 # Pytest
+
+<!-- _footer: <sup>1</sup> See also https://github.com/astropy/pytest-arraydiff\nhttps://github.com/smutch/code_prac_hwsa2021 -->
+
+![bg right:20% auto](https://docs.pytest.org/en/6.2.x/_static/pytest1.png)
+
+<style scoped>
+ul {margin-top: -15px;}
+li {margin: 0;}
+</style>
+
+Covering [pytest](https://docs.pytest.org/) and all it has to offer would take a whole session itself!
+There are a lot of great examples and articles online.
+
+Some useful topics to check out include:
+- Fixtures
+- Parameterizing tests
+- Setting up continuous integration (CI) for automated testing
+
+For regression testing, I recommend the [regtest](https://pypi.org/project/pytest-regtest/)<sup>1</sup> plugin...
 
 ---
 
@@ -303,7 +343,7 @@ printf("{:g}\n", *((int*)a));
 
 ---
 
-# **The most important** python optimisation rule
+# **The most important** scientific python optimisation rule
 
 #### For loops should be avoided if possible. Take advantage of Numpy's ufuncs (which will vectorize it and do it more efficiently).
 
