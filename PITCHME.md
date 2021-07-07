@@ -749,7 +749,7 @@ p,ul {font-size: 0.9rem;}
 #### Main suggestion
 
 - Optimize `code_prac/press_schechter.py` and see how fast you can make it<sup>1</sup>.
-    - Time your attempts using<br>`python3 -m timeit -s 'import code_prac' 'code_prac.main()'`
+    - Time your attempts using<br>`python3 -m timeit -s 'import code_prac' 'code_prac.press_schechter.main()'`
 - If you followed the setup instructions in the repo then you should have all of the libraries and packages you may need installed.
 - **Send me your fastest version of the code within 1 week and compete for the title of
   🏆🏆 "Optimizer Prime" 🏆🏆!**
