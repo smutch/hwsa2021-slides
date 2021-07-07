@@ -739,7 +739,7 @@ _For more information and a good, flexible library for multiple different parall
 
 ---
 
-<!-- _footer: <sup>1</sup> I got a 250x speed-up. Can you beat me? 😉\nhttps://github.com/smutch/code_prac_hwsa2021 -->
+<!-- _footer: <sup>1</sup> I got a 300x speed-up. Can you beat me? 😉\nhttps://github.com/smutch/code_prac_hwsa2021 -->
 <style scoped>
 p,ul {font-size: 0.9rem;}
 </style>
