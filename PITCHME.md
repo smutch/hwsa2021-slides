@@ -23,10 +23,10 @@ Simon Mutch
 ![bg blur:4px brightness:0.2 contrast:80%](./assets/chris-ried-ieic5Tq8YMk-unsplash.jpg)
 ![](white)
 
-* Presentation
-    - Optimisation
-    - Documentation
-    - Tips, tricks & tools
+* Presentation on optimisation
+    - Profiling
+    - Testing
+    - Speeding up Python code
 * Practical
     - Open ended session with a short code to try some of these techniques out on.
     - **:trophy: Competition :trophy:**: Who can achieve the greatest speed-up? :stopwatch:
