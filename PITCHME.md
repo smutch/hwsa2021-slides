@@ -672,13 +672,32 @@ It uses multiple processes, each running their own Python interpreter, with thei
 
 ---
 
+<style scoped>
+p {font-size: 0.8rem;}
+</style>
+
 # nogil
 
 As it turns out, Numba (does) and Cython (can) release the GIL! 🥳
 
-```py
+Numba can do it automatically in some cases (see [the docs](https://numba.readthedocs.io/en/stable/user/parallel.html#)), but we can also manually request it:
 
+```py{4,7}
+import numba
+import numpy as np
+
+@numba.njit(parallel=True)
+def myfunc(arr, n_loops):
+    result = np.zeros(arr.shape[0])
+    for _ in numba.prange(n_loops):
+        result += (np.log10(np.sqrt(arr[:, 0]**2 + arr[:, 1]**2) * 5) / 0.2)**6
+    return result
+
+points = np.random.rand(10_000, 2)
+result = myfunc(points, 10_000)
 ```
+
+For more information and a good, flexible library for multiple different parallelisation backends, see [joblib](https://joblib.readthedocs.io/en/latest/).
 
 ---
 
