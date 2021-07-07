@@ -706,14 +706,20 @@ For more information and a good, flexible library for multiple different paralle
 
 ---
 
+<!-- _footer: <sup>1</sup> I got a 250x speed-up. Can you beat me? 😉\nhttps://github.com/smutch/code_prac_hwsa2021 -->
+<style scoped>
+p,ul {font-size: 0.9rem;}
+</style>
+
 # Practical
 
 #### Main suggestion
 
-- Optimize `code_prac/press_schechter.py` and see how fast you can make it.
-- If you followed the setup instructions in the repo then you should have all of the librarys and packages you may need installed.
-- Send me your fastest version of the code within 1 week and compete for the title of
-  🏆🏆 "Optimizer Prime" 🏆🏆!
+- Optimize `code_prac/press_schechter.py` and see how fast you can make it<sup>1</sup>.
+    - Time your attempts using<br>`python3 -m timeit -s 'import code_prac' 'code_prac.main()'`
+- If you followed the setup instructions in the repo then you should have all of the libraries and packages you may need installed.
+- **Send me your fastest version of the code within 1 week and compete for the title of
+  🏆🏆 "Optimizer Prime" 🏆🏆!**
     - There are no rules, except that I must be able to call `code_prac.press_schechter` with the same arguments as the starting code and get the same result.
 
 ---
