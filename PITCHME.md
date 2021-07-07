@@ -44,7 +44,7 @@ Simon Mutch
 
 1) Profile
 2) Develop regression tests
-3) Baseline timing
+3) Baseline timing<br><br>
 4) Optimise identified bottlenecks
 5) Time
 6) Test
@@ -701,29 +701,55 @@ For more information and a good, flexible library for multiple different paralle
 
 ---
 
-<!--
-   - ---
+<!-- _class: all-centered -->
+# <!-- fit --> Practical time!
 
-   - # test
-   - 
-   - <div style="overflow: hidden;">
-   - <div style="position: absolute;" data-marpit-fragment>
-   - 
-   - ![](./assets/chris-ried-ieic5Tq8YMk-unsplash.jpg)
-   - 
-   - </div>
-   - 
-   - <div style="position: absolute;" data-marpit-fragment>
-   - 
-   - ![blur:4px brightness:0.2 contrast:80%](./assets/chris-ried-ieic5Tq8YMk-unsplash.jpg)
-   - 
-   - </div>
-   - 
-   - <div style="position: absolute;" data-marpit-fragment>
-   - 
-   - ![](./assets/chris-ried-ieic5Tq8YMk-unsplash.jpg)
-   - 
-   - </div>
-   - 
-   - </div>
-   -->
+---
+
+# Practical
+
+#### Main suggestion
+
+- Optimize `code_prac/press_schechter.py` and see how fast you can make it.
+- If you followed the setup instructions in the repo then you should have all of the librarys and packages you may need installed.
+- Send me your fastest version of the code within 1 week and compete for the title of
+  🏆🏆 "Optimizer Prime" 🏆🏆!
+    - There are no rules, except that I must be able to call `code_prac.press_schechter` with the same arguments as the starting code and get the same result.
+
+---
+
+<style scoped>
+p,ul {font-size: 0.7rem;}
+</style>
+
+
+# Practical
+
+#### and/or
+
+Take advantage of the knowledge of your peers and practice your skills with the `press_schechter` code.
+Some ideas include:
+
+- Add inline documentation and build docs using [Sphinx](https://www.sphinx-doc.org/en/master/)
+    - Tip: use the [Napolean](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html) extension and Numpy or Googledoc style docstrings.
+    - Bonus: Fork of the `code_prac_hwsa2021` repo on Github and serve the docs online using [Github Pages](https://pages.github.com/).
+- Develop unit tests for the code
+    - Bonus: Use [coverage.py](https://coverage.readthedocs.io/en/coverage-5.5/) tool to measure your unit test coverage and aim for >90% coverage.
+    - Bonus bonus: Fork the `code_prac_hwsa2021` repo and use [Github Actions](https://github.com/features/actions) to automatically test the code on every push.
+- Add type annotations to the code then use [mypy](https://mypy.readthedocs.io/en/stable/index.html) to check these.
+- If you manage to speed up the `press_schechter` function enough, try making an interactive tool for exploring the PS mass function using [Jupyter Notebooks](https://jupyter.org/) and [ipywidgets](https://ipywidgets.readthedocs.io/en/stable/) (or a tool of your choice).
+
+---
+
+# Remember
+
+![bg right:33%](./assets/glenn-carstens-peters-RLw-UC03Gwc-unsplash.jpg)
+
+1. Profile
+2. Develop regression tests
+3. Baseline timing<br><br>
+4. Optimise identified bottlenecks
+5. Time
+6. Test
+7. Profile then go back to 4
+   **or** call it a day
