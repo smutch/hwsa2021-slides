@@ -1,5 +1,5 @@
 ---
-title: HWSA 2021 - Structuring and optimising Python code
+title: HWSA 2021 - Optimising Python code
 description: Slides for the practical session of the 2021 HWSA
 theme: custom
 paginate: true
@@ -7,13 +7,18 @@ _paginate: false  <!--_-->
 footer: https://github.com/smutch/code_prac_hwsa2021
 ---
 
+<style scoped>
+* {text-align: center;}
+</style>
+
+
 <!-- _class: all-centered -->
 <!-- _backgroundImage: "linear-gradient(to bottom, #f05053, #e1eec3)" -->
 
-# <!--fit--> Optimizing and structuring python code
+# <!--fit--> Optimising Python code
 ## HWSA 2021
 
-Simon Mutch
+#### Simon Mutch
 
 ---
 
@@ -42,14 +47,24 @@ Simon Mutch
 
 ![bg right](./assets/age-barros-rBPOfVqROzY-unsplash.jpg)
 
-1) Profile
-2) Develop regression tests
-3) Baseline timing<br><br>
-4) Optimise identified bottlenecks
-5) Time
-6) Test
-7) Profile then go back to 4
+<div data-marpit-fragment>
+
+1. Profile
+2. Develop regression tests
+3. Baseline timing <br><br>
+
+</div>
+
+<div data-marpit-fragment>
+
+4. Optimise identified bottlenecks
+5. Time
+6. Test
+7. Profile then go back to 4
    **or** call it a day and bask in glory
+
+</div>
+
 
 ---
 
@@ -267,8 +282,8 @@ ul ul li {
 
 - **Unit tests**: Ideally test the smallest logical units of your code (e.g. individual functions).
     - Should (ideally) test correctness, edge cases and unexpected input.
-- **Integration tests**: Tests larger units or the whole code and how they interact.
-    - Should (ideally) test correctness, edge cases and unexpected input.
+- **Integration tests**: Tests larger units and how they interact, or the whole code.
+    - Should (ideally) test correctness and be used in conjunction with unit tests.
 - **Regression tests**: Tests larger units or the whole code to make sure you recover the same answer after changes.
     - Sometimes you don't want these (e.g. when changing physical models), but they are **very important** for optimisation.
 
@@ -314,6 +329,11 @@ For regression testing, the [regtest](https://pypi.org/project/pytest-regtest/) 
 
 ---
 
+<style scoped>
+p,ul {font-size: 0.9rem;}
+</style>
+
+
 # Regression tests with pytest
 
 Naming of directories, files and functions all matter with pytest. You can configure this, but standard practice is:
@@ -355,7 +375,7 @@ We need to initialise and store the expected output the first time around.
 > pytest --regtest-reset
 ```
 
-The results will go in `tests/_regtest_outputs/` which should be committed to version control.
+The results will go in `tests/_regtest_outputs/` **which should be committed to version control**.
 
 ---
 
@@ -379,7 +399,7 @@ tests/test_regressions.py .                                                     
 
 ---
 
-# Regression tests with pytest-regtest
+# Regression tests
 
 If the output of the `press_schechter` function changes:
 
@@ -488,7 +508,7 @@ From the docs: [[.nudge-down]]
 ![bg right:33%](./assets/braden-collum-9HI8UJMSdZA-unsplash.jpg)
 
 <style scoped>
-ul {font-size: 0.8rem;}
+p,ul {font-size: 0.8rem;}
 h1 {line-height: 1.5rem;}
 li.no-bullet {list-style-type: none;} 
 </style>
@@ -497,10 +517,16 @@ There are a number of techniques and tools at our disposal. Which ones will work
 - Use 3rd-party libraries which are already optimised!
     **(I won't cover this, but it should always be your first stop.)**
 - Algorithmic changes (e.g. identifying redundant calculations).
-* ⬇️ **This is what we'll look at today.** ⬇️  [[.no-bullet]]
+
+<div data-marpit-fragment>
+
+- ⬇️ **This is what we'll look at today.** ⬇️  [[.no-bullet]]
 - Memoisation (caching of results for reuse later)
 - Dropping down to a lower level using [Numba](https://numba.pydata.org/), [Cython](https://numba.pydata.org/), etc.
 - Parallelisation
+
+</div>
+
 
 ---
 
@@ -517,7 +543,9 @@ Sometimes we have a function that may be called many times with the same input. 
 
 # Memoisation
 
-#### A (very contrived) example
+#### A (very contrived) example<sup>1</sup>
+
+<!-- _footer: <sup>1</sup> Don't do this!!!\nhttps://github.com/smutch/code_prac_hwsa2021 -->
 
 ```py
 import numpy as np
@@ -659,7 +687,10 @@ This technique works well when:
 
 ---
 
-# Native parallelisation in Python is expensive
+<!-- _backgroundColor: #263238 -->
+<!-- _color: white -->
+
+# **Extra**<br>Native parallelisation in Python is expensive
 
 ### The GIL
 
@@ -676,11 +707,11 @@ It uses multiple processes, each running their own Python interpreter, with thei
 p {font-size: 0.8rem;}
 </style>
 
-# nogil
+# Parallelisation with Numba
 
 As it turns out, Numba (does) and Cython (can) release the GIL! 🥳
 
-Numba can do it automatically in some cases (see [the docs](https://numba.readthedocs.io/en/stable/user/parallel.html#)), but we can also manually request it:
+Numba can parallelise code automatically in some cases (see [the docs](https://numba.readthedocs.io/en/stable/user/parallel.html#)), but we can also manually request it:
 
 ```py{4,7}
 import numba
@@ -697,7 +728,9 @@ points = np.random.rand(10_000, 2)
 result = myfunc(points, 10_000)
 ```
 
-For more information and a good, flexible library for multiple different parallelisation backends, see [joblib](https://joblib.readthedocs.io/en/latest/).
+Even with Numba, the best performance gains only come when the units of work are large enough.
+
+_For more information and a good, flexible library for multiple different parallelisation backends, see [joblib](https://joblib.readthedocs.io/en/latest/)._
 
 ---
 
