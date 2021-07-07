@@ -538,7 +538,9 @@ for _ in range(100):
 
 # Memoisation
 
-#### A (very contrived) example
+#### A (very contrived) example<sup>1</sup>
+
+<!-- _footer: <sup>1</sup> Don't do this!!!\nhttps://github.com/smutch/code_prac_hwsa2021 -->
 
 ```py {1,7}
 from functools import cache
@@ -558,7 +560,127 @@ for _ in range(100):
 
 `1.28 s ± 423 ms per loop (mean ± std. dev. of 7 runs, 1 loop each)`
 
+<div style="margin-bottom: 40px;" data-marpit-fragment>
 A factor of ~4 speed-up by adding 2 lines... Not bad!
+</div>
+
+---
+
+# Memoisation
+
+![bg right:20% h:200px](./assets/joblib_logo.svg)
+
+#### However...
+
+`functools.cache` stores the result in RAM and needs to compare each input argument against the cached results.
+This works well when arguments and output are small e.g `float`s `int`s etc.
+
+#### joblib.Memory
+
+These limitations can be overcome in some cases with [joblib.Memory](https://joblib.readthedocs.io/en/latest/memory.html#memory).
+It caches to disk and removes much of the overhead with large input and out arrays.
+
+---
+
+# Going lower level...
+
+<style scoped>
+p {font-size: 0.75rem;}
+</style>
+
+![bg left:25%](./assets/verne-ho-5jfvhQPWtUo-unsplash.jpg)
+
+Sometimes the best way to improve the speed of our code is to use another language!... 😱
+
+But fear not! This does not mean having to re-write your code in C/C++/Rust etc.
+
+<div style="margin-top: 30px" data-marpit-fragment>
+
+[![w:200px](./assets/numba-blue-horizontal-rgb.svg)](https://numba.pydata.org/) A **J**ust **I**n **T**ime (JIT) compiler to machine code. It can be incredibly easy to use and provide great speed gains. It can also be used for GPU programming.
+
+</div>
+
+<div data-marpit-fragment>
+
+[![w:200px](./assets/cythonlogo.png)](https://cython.readthedocs.io/en/latest/) A python-superset language that can be used to create C efficient C extensions. As well as providing similar speed-ups to Numba (with a bit more effort), it can be used in more complex situations and also provides a great and flexible way to interface C libraries with Python.
+
+</div>
+
+---
+
+# Numba
+
+Using Numba can be incredibly easy:
+
+```py
+import numba
+import numpy as np
+
+@numba.njit
+def myfunc(arr, n_loops):
+    result = np.zeros(arr.shape[0])
+    for _ in range(n_loops):
+        result += (np.log10(np.sqrt(arr[:, 0]**2 + arr[:, 1]**2) * 5) / 0.2)**6
+    return result
+
+points = np.random.rand(10_000, 2)
+result = myfunc(points, 100)
+```
+
+<style scoped>
+ul {font-size: 0.75rem;}
+</style>
+
+- `njit` means compile in "no-python" mode. This requires the function to be simple and use only support functions and types (most of Numpy) but not Python classes or dicts.
+- Loops are encouraged! They will be optimised by LLVM (the compiler) for your CPU.
+* `15.7 ms` with decorator vs. `42.5 ms` without <span data-marpit-fragment>**= ~2.5x speed-up**</span>
+
+
+---
+
+# Where Numba might not be enough<br>(WARNING: very subjective!)
+
+- It only supports a subset of Python + Numpy (although a very large one).
+- It can be hard to debug if things don't work as expected.
+- There isn't much scope for workarounds. If it doesn't "just work" then often it won't work.
+
+**Despite these, I definitely recommend Numba as the first-stop for speeding up numerical code!**
+
+---
+
+# Parallelisation
+
+Almost all computers have multiple cores. In some cases we can take advantage of this to speed up our calculations. Numpy & Scipy actually do this for some functions without you necessarily realising.
+
+This technique works well when:
+- you have an expensive function
+- being called multiple times with different arguments
+- independently of each other.
+
+---
+
+# Native parallelisation in Python is expensive
+
+### The GIL
+
+The Global Interpreter Lock (GIL) is a mutex which ensures only one thread can use the interpreter at any one time. It's a feature that makes Python simple and easy to use.
+But it's a hurdle to efficient parallelisation.
+
+To get around this natively we can use the [multiprocessing](https://docs.python.org/3/library/multiprocessing.html) standard library.
+It uses multiple processes, each running their own Python interpreter, with their own private memory space.
+**But** this is expensive, so we need to have enough work for each process to make it worthwhile.
+
+---
+
+# nogil
+
+As it turns out, Numba (does) and Cython (can) release the GIL! 🥳
+
+```py
+
+```
+
+---
 
 <!--
    - ---
