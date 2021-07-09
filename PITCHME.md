@@ -18,7 +18,16 @@ footer: https://github.com/smutch/code_prac_hwsa2021
 # <!--fit--> Optimising Python code
 ## HWSA 2021
 
-#### Simon Mutch
+### Simon Mutch
+ASTRO 3D Postdoc
+Senior Research Data Specialist: Melbourne Data Analytics Platform
+The University of Melbourne
+
+<div style="display: block; position: absolute; bottom:-3px; right: 25px;">
+
+![w:200px](./assets/UOM-Rev3D_H_Sm_RGB.jpg)
+
+</div>
 
 ---
 
@@ -454,8 +463,8 @@ Translated to C this is actually something more like _(but in reality way more c
 
 ```c
 void *a = (void*)malloc(sizeof(double));
-*(int*)a = 8.0;
-printf("{:g}\n", *((int*)a));
+*(double*)a = 8.0;
+printf("{:g}\n", *((double*)a));
 ```
 
 ---
@@ -606,7 +615,7 @@ This works well when arguments and output are small e.g `float`s `int`s etc.
 #### joblib.Memory
 
 These limitations can be overcome in some cases with [joblib.Memory](https://joblib.readthedocs.io/en/latest/memory.html#memory).
-It caches to disk and removes much of the overhead with large input and out arrays.
+It caches to disk and removes much of the overhead with large input and output arrays.
 
 ---
 
@@ -624,13 +633,13 @@ But fear not! This does not mean having to re-write your code in C/C++/Rust etc.
 
 <div style="margin-top: 30px" data-marpit-fragment>
 
-[![w:200px](./assets/numba-blue-horizontal-rgb.svg)](https://numba.pydata.org/) A **J**ust **I**n **T**ime (JIT) compiler to machine code. It can be incredibly easy to use and provide great speed gains. It can also be used for GPU programming.
+[![w:200px](./assets/numba-blue-horizontal-rgb.svg)](https://numba.pydata.org/) Does **J**ust **I**n **T**ime (JIT) compilation of Python code. It can be incredibly easy to use and can provide big speed gains. It can also be used for GPU programming.
 
 </div>
 
 <div data-marpit-fragment>
 
-[![w:200px](./assets/cythonlogo.png)](https://cython.readthedocs.io/en/latest/) A python-superset language that can be used to create C efficient C extensions. As well as providing similar speed-ups to Numba (with a bit more effort), it can be used in more complex situations and also provides a great and flexible way to interface C libraries with Python.
+[![w:200px](./assets/cythonlogo.png)](https://cython.readthedocs.io/en/latest/) A python-superset language that can be used to create efficient C extensions. As well as providing similar speed-ups to Numba (with a bit more effort), it can be used in more complex situations and also provides a great and flexible way to interface C libraries with Python.
 
 </div>
 
@@ -660,7 +669,7 @@ ul {font-size: 0.75rem;}
 </style>
 
 - `njit` means compile in "no-python" mode. This requires the function to be simple and use only support functions and types (most of Numpy) but not Python classes or dicts.
-- Loops are encouraged! They will be optimised by LLVM (the compiler) for your CPU.
+- Loops are fine! They will be optimised by LLVM (the compiler) for your CPU.
 * `15.7 ms` with decorator vs. `42.5 ms` without <span data-marpit-fragment>**= ~2.5x speed-up**</span>
 
 
@@ -751,9 +760,8 @@ p,ul {font-size: 0.9rem;}
 - Optimize `code_prac/press_schechter.py` and see how fast you can make it<sup>1</sup>.
     - Time your attempts using<br>`python -m timeit -s 'import code_prac' 'code_prac.press_schechter.main()'`
 - If you followed the setup instructions in the repo then you should have all of the libraries and packages you may need installed.
-- **Send me your fastest version of the code within 1 week and compete for the title of
-  🏆🏆 "Optimizer Prime" 🏆🏆!**
-    - There are no rules, except that I must be able to call `code_prac.press_schechter` with the same arguments as the starting code and get the same result.
+- **Compete for the title of 🏆🏆 "Optimizer Prime" 🏆🏆!**
+    - There are no rules, except that we must be able to call `code_prac.press_schechter.mass_function` with the same arguments as the starting code and get the same result.
 
 ---
 
@@ -776,7 +784,7 @@ Some ideas include:
     - Bonus: Use [coverage.py](https://coverage.readthedocs.io/en/coverage-5.5/) tool to measure your unit test coverage and aim for >90% coverage.
     - Bonus bonus: Fork the `code_prac_hwsa2021` repo and use [Github Actions](https://github.com/features/actions) to automatically test the code on every push.
 - Add type annotations to the code then use [mypy](https://mypy.readthedocs.io/en/stable/index.html) to check these.
-- If you manage to speed up the `press_schechter` function enough, try making an interactive tool for exploring the PS mass function using [Jupyter Notebooks](https://jupyter.org/) and [ipywidgets](https://ipywidgets.readthedocs.io/en/stable/) (or a tool of your choice).
+- If you manage to speed up the `press_schechter` function enough (or ask me for a faster version), try making an interactive tool for exploring the PS mass function using [Jupyter Notebooks](https://jupyter.org/) and [ipywidgets](https://ipywidgets.readthedocs.io/en/stable/) (or a tool of your choice).
 
 ---
 
