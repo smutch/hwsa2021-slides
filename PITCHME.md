@@ -8,12 +8,14 @@ footer: https://github.com/smutch/code_prac_hwsa2021
 ---
 
 <style scoped>
-* {text-align: center;}
+* {text-align: center; color: white;}
+h1 {color: white;}
+a {color: dodgerblue;}
 </style>
 
 
 <!-- _class: all-centered -->
-<!-- _backgroundImage: "linear-gradient(to bottom, #f05053, #e1eec3)" -->
+<!-- _backgroundImage: "linear-gradient(to bottom, #2C5364, #203A43, #0F2027)" -->
 
 # <!--fit--> Optimising Python code
 ## HWSA 2021
@@ -31,6 +33,24 @@ The University of Melbourne
 
 ---
 
+<style scoped>
+p {
+    font-size: 0.7rem;
+    margin-top: 30px;
+}
+
+section.all-centered>*:first-child {
+  position: initial;
+  top: 0px;
+}
+
+hr {
+    margin: 0;
+}
+
+</style>
+
+
 # Session outline [[.large]]
 
 ![bg](black)
@@ -44,6 +64,12 @@ The University of Melbourne
 * Practical
     - Open ended session with a short code to try some of these techniques out on.
     - **:trophy: Competition :trophy:**: Who can achieve the greatest speed-up? :stopwatch:
+
+<div data-marpit-fragment>
+
+_There is more content in these slides than we'll cover today, but hoepfully they will be a useful reference for the future._
+
+</div>
 
 ---
 
