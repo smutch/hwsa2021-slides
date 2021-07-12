@@ -128,7 +128,7 @@ for z in z_list:
 profile.disable()
 
 ps = pstats.Stats(profile).strip_dirs().sort_stats(pstats.SortKey.TIME)
-ps.print_stats()
+ps.print_stats(10)
 ```
 
 </div>
@@ -157,7 +157,7 @@ for z in z_list:
 profile.disable()
 
 ps = pstats.Stats(profile).strip_dirs().sort_stats(pstats.SortKey.TIME)
-ps.print_stats()
+ps.print_stats(10)
 ```
 
 </div>
@@ -186,7 +186,7 @@ for z in z_list:
 profile.disable()
 
 ps = pstats.Stats(profile).strip_dirs().sort_stats(pstats.SortKey.TIME)
-ps.print_stats()
+ps.print_stats(10)
 ```
 
 </div>
